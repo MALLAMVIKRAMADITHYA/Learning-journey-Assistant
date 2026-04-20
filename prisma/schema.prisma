@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model University {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  students Student[]
+}
+
+model Student {
+  id                 Int           @id @default(autoincrement())
+  name               String
+  email              String        @unique
+  password           String
+  overallPerformance Float
+  universityId       Int
+  university         University    @relation(fields: [universityId], references: [id])
+  enrollments        Enrollment[]
+  assessments        Assessment[]
+  quizzes            Quiz[]
+  recommendations    Recommendation[]
+}
+
+model Subject {
+  id          Int          @id @default(autoincrement())
+  code        String       @unique
+  name        String
+  description String
+  enrollments Enrollment[]
+  assessments Assessment[]
+  quizzes     Quiz[]
+}
+
+model Enrollment {
+  id        Int     @id @default(autoincrement())
+  studentId Int
+  subjectId Int
+  student   Student @relation(fields: [studentId], references: [id])
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  @@unique([studentId, subjectId])
+}
+
+model Assessment {
+  id        Int      @id @default(autoincrement())
+  title     String
+  type      String
+  score     Float
+  maxScore  Float
+  feedback  String
+  dueDate   String
+  studentId Int
+  subjectId Int
+  student   Student  @relation(fields: [studentId], references: [id])
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+}
+
+model Quiz {
+  id        Int      @id @default(autoincrement())
+  title     String
+  topic     String
+  score     Float
+  maxScore  Float
+  studentId Int
+  subjectId Int
+  student   Student  @relation(fields: [studentId], references: [id])
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+}
+
+model Recommendation {
+  id        Int     @id @default(autoincrement())
+  type      String
+  content   String
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+}
