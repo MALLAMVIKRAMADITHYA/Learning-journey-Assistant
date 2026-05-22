@@ -35,9 +35,9 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 flex items-center justify-center p-6">
-      <div className="w-full max-w-5xl grid lg:grid-cols-2 bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-        <div className="hidden lg:flex flex-col justify-between p-10 bg-gradient-to-br from-blue-700 via-indigo-700 to-slate-900 text-white">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100 flex items-center justify-center p-6">
+      <div className="w-full max-w-5xl grid lg:grid-cols-2 bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
+        <div className="hidden lg:flex flex-col justify-between p-10 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 text-white">
           <div>
             <p className="text-sm uppercase tracking-[0.25em] text-blue-100">
               La Trobe Project
@@ -45,7 +45,7 @@ export default function HomePage() {
             <h1 className="text-4xl font-bold mt-4 leading-tight">
               Learning Journey Assistant
             </h1>
-            <p className="mt-5 text-blue-100 text-lg leading-8">
+            <p className="mt-5 text-blue-50 text-lg leading-8">
               Personalized student analytics, skill gap detection, smart
               recommendations, and adaptive quizzes in one intelligent learning
               platform.
@@ -53,21 +53,21 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-2xl bg-white/10 p-4 border border-white/10">
+            <div className="rounded-2xl bg-white/15 p-4 border border-white/20">
               <p className="text-2xl font-bold">10+</p>
-              <p className="text-sm text-blue-100 mt-1">Demo Students</p>
+              <p className="text-sm text-blue-50 mt-1">Demo Students</p>
             </div>
-            <div className="rounded-2xl bg-white/10 p-4 border border-white/10">
+            <div className="rounded-2xl bg-white/15 p-4 border border-white/20">
               <p className="text-2xl font-bold">4</p>
-              <p className="text-sm text-blue-100 mt-1">Common Subjects</p>
+              <p className="text-sm text-blue-50 mt-1">Common Subjects</p>
             </div>
-            <div className="rounded-2xl bg-white/10 p-4 border border-white/10">
+            <div className="rounded-2xl bg-white/15 p-4 border border-white/20">
               <p className="text-2xl font-bold">AI-Style</p>
-              <p className="text-sm text-blue-100 mt-1">Recommendations</p>
+              <p className="text-sm text-blue-50 mt-1">Recommendations</p>
             </div>
-            <div className="rounded-2xl bg-white/10 p-4 border border-white/10">
+            <div className="rounded-2xl bg-white/15 p-4 border border-white/20">
               <p className="text-2xl font-bold">Adaptive</p>
-              <p className="text-sm text-blue-100 mt-1">Quiz Support</p>
+              <p className="text-sm text-blue-50 mt-1">Quiz Support</p>
             </div>
           </div>
         </div>
@@ -144,10 +144,10 @@ export default function HomePage() {
             )}
 
             <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <p className="font-semibold text-slate-800 mb-2">Demo logins</p>
+              <p className="font-semibold text-slate-800 mb-2"> logins Credentilas for DEMO</p>
               <div className="space-y-1 text-sm text-slate-600">
                 <p>student@latrobe.edu.au / 123456</p>
-                
+               
               </div>
             </div>
           </div>
