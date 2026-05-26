@@ -75,10 +75,13 @@ const students = [
 ];
 
 async function main() {
+  await prisma.studentFeedback.deleteMany();
   await prisma.recommendation.deleteMany();
   await prisma.quiz.deleteMany();
   await prisma.assessment.deleteMany();
   await prisma.enrollment.deleteMany();
+  await prisma.learningOutcome.deleteMany();
+  await prisma.subjectModule.deleteMany();
   await prisma.subject.deleteMany();
   await prisma.student.deleteMany();
   await prisma.university.deleteMany();
@@ -93,7 +96,44 @@ async function main() {
     data: {
       code: "CSE3NW",
       name: "Network Systems and Web Security",
-      description: "Covers networks, threats, vulnerabilities, and web security.",
+      description:
+        "Covers networks, threats, vulnerabilities, and web security principles.",
+      modules: {
+        create: [
+          {
+            title: "Module 1: Network Fundamentals",
+            description: "Introduction to network layers, protocols, and traffic flow.",
+          },
+          {
+            title: "Module 2: Web Vulnerabilities",
+            description: "Common vulnerabilities such as SQL injection and XSS.",
+          },
+          {
+            title: "Module 3: Threat Modelling",
+            description: "Identifying threats and applying security risk analysis.",
+          },
+          {
+            title: "Module 4: Secure Coding",
+            description: "Secure development practices and defensive programming.",
+          },
+        ],
+      },
+      learningOutcomes: {
+        create: [
+          {
+            code: "SILO 1",
+            description: "Explain core network and web security concepts.",
+          },
+          {
+            code: "SILO 2",
+            description: "Identify common vulnerabilities and security threats.",
+          },
+          {
+            code: "SILO 3",
+            description: "Apply threat modelling to real-world scenarios.",
+          },
+        ],
+      },
     },
   });
 
@@ -101,7 +141,44 @@ async function main() {
     data: {
       code: "CSE3BD",
       name: "Big Data Analytics",
-      description: "Covers distributed data processing and analytics techniques.",
+      description:
+        "Covers distributed data processing, Spark SQL, and analytics techniques.",
+      modules: {
+        create: [
+          {
+            title: "Module 1: Big Data Fundamentals",
+            description: "Introduction to big data concepts, volume, velocity, and variety.",
+          },
+          {
+            title: "Module 2: Spark Transformations",
+            description: "Using map, filter, reduce, and transformations in Spark.",
+          },
+          {
+            title: "Module 3: Spark SQL",
+            description: "Querying structured data using Spark SQL.",
+          },
+          {
+            title: "Module 4: Distributed Processing",
+            description: "Understanding distributed computing and cluster processing.",
+          },
+        ],
+      },
+      learningOutcomes: {
+        create: [
+          {
+            code: "SILO 1",
+            description: "Explain big data processing concepts and frameworks.",
+          },
+          {
+            code: "SILO 2",
+            description: "Apply Spark transformations and actions correctly.",
+          },
+          {
+            code: "SILO 3",
+            description: "Analyse large datasets using distributed processing tools.",
+          },
+        ],
+      },
     },
   });
 
@@ -109,7 +186,44 @@ async function main() {
     data: {
       code: "CSE3DB",
       name: "Database Systems",
-      description: "Covers database design, SQL, normalization, and data modeling.",
+      description:
+        "Covers database design, SQL, normalization, relationships, and data modelling.",
+      modules: {
+        create: [
+          {
+            title: "Module 1: ER Modelling",
+            description: "Designing entities, attributes, and relationships.",
+          },
+          {
+            title: "Module 2: SQL Queries",
+            description: "Writing SELECT, JOIN, GROUP BY, and nested SQL queries.",
+          },
+          {
+            title: "Module 3: Normalization",
+            description: "Reducing redundancy using normal forms.",
+          },
+          {
+            title: "Module 4: Constraints and Relationships",
+            description: "Using primary keys, foreign keys, and relational constraints.",
+          },
+        ],
+      },
+      learningOutcomes: {
+        create: [
+          {
+            code: "SILO 1",
+            description: "Design relational database schemas using ER models.",
+          },
+          {
+            code: "SILO 2",
+            description: "Write SQL queries to retrieve and manipulate data.",
+          },
+          {
+            code: "SILO 3",
+            description: "Apply normalization to improve database structure.",
+          },
+        ],
+      },
     },
   });
 
@@ -117,7 +231,44 @@ async function main() {
     data: {
       code: "CSE3SE",
       name: "Software Engineering",
-      description: "Covers software lifecycle, requirements, design, testing, and teamwork.",
+      description:
+        "Covers software lifecycle, requirements, design, testing, and teamwork.",
+      modules: {
+        create: [
+          {
+            title: "Module 1: Software Development Life Cycle",
+            description: "Understanding planning, design, development, testing, and deployment.",
+          },
+          {
+            title: "Module 2: Requirements Analysis",
+            description: "Gathering and documenting functional and non-functional requirements.",
+          },
+          {
+            title: "Module 3: Software Design",
+            description: "Design principles, architecture, and modular development.",
+          },
+          {
+            title: "Module 4: Software Testing",
+            description: "Testing strategies, unit testing, and regression testing.",
+          },
+        ],
+      },
+      learningOutcomes: {
+        create: [
+          {
+            code: "SILO 1",
+            description: "Explain the software development lifecycle.",
+          },
+          {
+            code: "SILO 2",
+            description: "Analyse and document software requirements.",
+          },
+          {
+            code: "SILO 3",
+            description: "Apply testing methods to improve software quality.",
+          },
+        ],
+      },
     },
   });
 
@@ -143,182 +294,126 @@ async function main() {
       })),
     });
 
-    await prisma.assessment.createMany({
-      data: [
-        {
-          title: "Assignment 1",
-          type: "Assignment",
-          score: 55 + ((i * 3) % 35),
-          maxScore: 100,
-          feedback: "Needs better justification and stronger concept understanding in security topics.",
-          dueDate: "2026-03-20",
-          studentId: student.id,
-          subjectId: subject1.id,
-        },
-        {
-          title: "Lab Portfolio",
-          type: "Portfolio",
-          score: 60 + ((i * 4) % 30),
-          maxScore: 100,
-          feedback: "Good structure, but critical analysis and reflection depth can be improved.",
-          dueDate: "2026-04-10",
-          studentId: student.id,
-          subjectId: subject1.id,
-        },
-        {
-          title: "Spark SQL Task",
-          type: "Assignment",
-          score: 58 + ((i * 5) % 32),
-          maxScore: 100,
-          feedback: "Logic is mostly correct, but sorting, joins, and formatting need more accuracy.",
-          dueDate: "2026-03-25",
-          studentId: student.id,
-          subjectId: subject2.id,
-        },
-        {
-          title: "Big Data Report",
-          type: "Report",
-          score: 62 + ((i * 2) % 28),
-          maxScore: 100,
-          feedback: "Report is clear, but discussion and technical interpretation need strengthening.",
-          dueDate: "2026-04-05",
-          studentId: student.id,
-          subjectId: subject2.id,
-        },
-        {
-          title: "SQL Assignment",
-          type: "Assignment",
-          score: 57 + ((i * 4) % 34),
-          maxScore: 100,
-          feedback: "SQL query design is acceptable, but normalization and joins need more practice.",
-          dueDate: "2026-03-28",
-          studentId: student.id,
-          subjectId: subject3.id,
-        },
-        {
-          title: "Database Design Task",
-          type: "Project",
-          score: 61 + ((i * 3) % 30),
-          maxScore: 100,
-          feedback: "Schema design is reasonable, but relationships and constraints can be improved.",
-          dueDate: "2026-04-12",
-          studentId: student.id,
-          subjectId: subject3.id,
-        },
-        {
-          title: "Requirements Analysis",
-          type: "Assignment",
-          score: 59 + ((i * 5) % 33),
-          maxScore: 100,
-          feedback: "Requirements are identified, but documentation and clarity can be improved.",
-          dueDate: "2026-03-22",
-          studentId: student.id,
-          subjectId: subject4.id,
-        },
-        {
-          title: "Software Project Report",
-          type: "Report",
-          score: 64 + ((i * 2) % 26),
-          maxScore: 100,
-          feedback: "Teamwork and structure are good, but testing discussion needs more detail.",
-          dueDate: "2026-04-15",
-          studentId: student.id,
-          subjectId: subject4.id,
-        },
-      ],
-    });
+    for (const subject of allSubjects) {
+      const base = s.overallPerformance;
+      const offset = i % 5;
 
-    await prisma.quiz.createMany({
-      data: [
-        {
-          title: "Quiz 1",
-          topic: "Threat Modelling",
-          score: 50 + ((i * 3) % 40),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject1.id,
-        },
-        {
-          title: "Quiz 2",
-          topic: "Web Vulnerabilities",
-          score: 54 + ((i * 4) % 36),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject1.id,
-        },
-        {
-          title: "Quiz 1",
-          topic: "Spark Transformations",
-          score: 56 + ((i * 5) % 34),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject2.id,
-        },
-        {
-          title: "Quiz 2",
-          topic: "Distributed Processing",
-          score: 58 + ((i * 3) % 32),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject2.id,
-        },
-        {
-          title: "Quiz 1",
-          topic: "Normalization",
-          score: 52 + ((i * 4) % 38),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject3.id,
-        },
-        {
-          title: "Quiz 2",
-          topic: "SQL Joins",
-          score: 55 + ((i * 2) % 35),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject3.id,
-        },
-        {
-          title: "Quiz 1",
-          topic: "SDLC",
-          score: 57 + ((i * 3) % 33),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject4.id,
-        },
-        {
-          title: "Quiz 2",
-          topic: "Software Testing",
-          score: 53 + ((i * 5) % 37),
-          maxScore: 100,
-          studentId: student.id,
-          subjectId: subject4.id,
-        },
-      ],
+      await prisma.assessment.createMany({
+        data: [
+          {
+            title: "Assignment 1",
+            type: "Assignment",
+            score: Math.max(45, Math.min(92, base - 8 + offset)),
+            maxScore: 100,
+            feedback:
+              "Good attempt, but more depth and stronger explanation are needed to improve the final answer.",
+            dueDate: "2026-03-20",
+            studentId: student.id,
+            subjectId: subject.id,
+          },
+          {
+            title: "Assignment 2",
+            type: "Report",
+            score: Math.max(45, Math.min(94, base - 2 + offset)),
+            maxScore: 100,
+            feedback:
+              "The work is well structured, but analysis and connection to learning outcomes can be improved.",
+            dueDate: "2026-04-10",
+            studentId: student.id,
+            subjectId: subject.id,
+          },
+          {
+            title: "Practical Task",
+            type: "Practical",
+            score: Math.max(45, Math.min(95, base + 4 - offset)),
+            maxScore: 100,
+            feedback:
+              "Practical implementation is acceptable, but accuracy and explanation should be strengthened.",
+            dueDate: "2026-04-24",
+            studentId: student.id,
+            subjectId: subject.id,
+          },
+        ],
+      });
+
+      await prisma.quiz.createMany({
+        data: [
+          {
+            title: "Quiz 1",
+            topic:
+              subject.name === "Network Systems and Web Security"
+                ? "Threat Modelling"
+                : subject.name === "Big Data Analytics"
+                ? "Spark Transformations"
+                : subject.name === "Database Systems"
+                ? "SQL Joins"
+                : "SDLC",
+            score: Math.max(40, Math.min(90, base - 10 + offset)),
+            maxScore: 100,
+            studentId: student.id,
+            subjectId: subject.id,
+          },
+          {
+            title: "Quiz 2",
+            topic:
+              subject.name === "Network Systems and Web Security"
+                ? "Web Vulnerabilities"
+                : subject.name === "Big Data Analytics"
+                ? "Distributed Processing"
+                : subject.name === "Database Systems"
+                ? "Normalization"
+                : "Software Testing",
+            score: Math.max(40, Math.min(92, base - 4 - offset)),
+            maxScore: 100,
+            studentId: student.id,
+            subjectId: subject.id,
+          },
+        ],
+      });
+    }
+
+    await prisma.studentFeedback.create({
+      data: {
+        summary: `${s.name} is currently performing at ${s.overallPerformance}%. The student has shown progress across enrolled subjects but still needs targeted improvement in weaker SILO areas.`,
+        strengths:
+          s.overallPerformance >= 75
+            ? "Strong understanding of core concepts, consistent performance, and good application of practical skills."
+            : "Shows good effort and basic understanding of subject concepts, with potential to improve through structured revision.",
+        weaknesses:
+          s.overallPerformance < 60
+            ? "Needs improvement in multiple SILOs, especially concept application, quiz performance, and detailed explanation."
+            : "Requires more practice in selected weak topics and deeper connection between answers and learning outcomes.",
+        nextSteps:
+          "Revise weak modules, review feedback, attempt adaptive quizzes, and focus on SILOs linked to low assessment and quiz scores.",
+        studentId: student.id,
+      },
     });
 
     await prisma.recommendation.createMany({
       data: [
         {
           type: "Study Plan",
-          content: `Revise weak concepts in all enrolled subjects and spend extra time on practice-based learning for ${s.name}.`,
+          content: `Revise weak SILOs and subject modules for ${s.name}. Focus on practice-based learning and weekly revision.`,
           studentId: student.id,
         },
         {
           type: "Quiz Suggestion",
-          content: `Attempt adaptive quizzes in weak topics to improve subject mastery for ${s.name}.`,
+          content: `Attempt adaptive quizzes connected to weak topics and learning outcomes.`,
           studentId: student.id,
         },
         {
           type: "Improvement Tip",
-          content: `Focus on feedback comments, revise theory, and practice more problem-solving questions.`,
+          content:
+            "Use assessment feedback to identify gaps, revise relevant modules, and practice similar questions.",
           studentId: student.id,
         },
       ],
     });
   }
 
-  console.log("✅ 10 students with 4 common subjects seeded successfully.");
+  console.log(
+    "✅ Seed completed: 10 students, 4 subjects, modules, SILOs, feedback, assessments, quizzes."
+  );
 }
 
 main()

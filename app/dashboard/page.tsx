@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Chatbot from "../../components/Chatbot";
 import { useRouter } from "next/navigation";
 import {
   LineChart,
@@ -50,6 +51,14 @@ type Recommendation = {
   content: string;
 };
 
+type StudentFeedback = {
+  id: number;
+  summary: string;
+  strengths: string;
+  weaknesses: string;
+  nextSteps: string;
+};
+
 type StudentData = {
   id: number;
   name: string;
@@ -62,6 +71,7 @@ type StudentData = {
   assessments: Assessment[];
   quizzes: Quiz[];
   recommendations: Recommendation[];
+  feedbacks?: StudentFeedback[];
 };
 
 function getOverallBadge(score: number) {
@@ -72,6 +82,33 @@ function getOverallBadge(score: number) {
     return "bg-amber-100 text-amber-700 border-amber-200";
   }
   return "bg-emerald-100 text-emerald-700 border-emerald-200";
+}
+
+function getOverallFeedback(score: number) {
+  if (score < 60) {
+    return {
+      title: "Needs Support",
+      message:
+        "Your overall performance shows that you need extra support in multiple subjects. Focus on weak areas, revise subject modules, and attempt adaptive quizzes regularly.",
+      color: "border-red-200 bg-red-50 text-red-800",
+    };
+  }
+
+  if (score < 75) {
+    return {
+      title: "Improving",
+      message:
+        "Your overall performance is improving. You have a basic understanding of the subjects, but you should focus more on weak topics and connect your answers with subject learning outcomes.",
+      color: "border-amber-200 bg-amber-50 text-amber-800",
+    };
+  }
+
+  return {
+    title: "Strong Performance",
+    message:
+      "Your overall performance is strong. You are showing good understanding across subjects. Continue maintaining consistency and attempt advanced practice questions.",
+    color: "border-emerald-200 bg-emerald-50 text-emerald-800",
+  };
 }
 
 export default function DashboardPage() {
@@ -184,13 +221,11 @@ export default function DashboardPage() {
     student.quizzes
   );
 
-  const progressData = getProgressData(
-    student.assessments,
-    student.quizzes
-  );
+  const progressData = getProgressData(student.assessments, student.quizzes);
 
   const weakAssessments = student.assessments.filter((a) => a.score < 60);
   const weakQuizzes = student.quizzes.filter((q) => q.score < 60);
+  const overallFeedback = getOverallFeedback(student.overallPerformance);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 p-6">
@@ -201,7 +236,9 @@ export default function DashboardPage() {
               <p className="text-blue-200 text-sm uppercase tracking-[0.25em]">
                 Student Dashboard
               </p>
-              <h1 className="text-4xl font-bold mt-3">Welcome, {student.name}</h1>
+              <h1 className="text-4xl font-bold mt-3">
+                Welcome, {student.name}
+              </h1>
               <p className="text-blue-100 mt-2">{student.university.name}</p>
 
               <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -290,8 +327,64 @@ export default function DashboardPage() {
             <XAxis dataKey="name" />
             <YAxis domain={[0, 100]} />
             <Tooltip />
-            <Line type="monotone" dataKey="score" stroke="#2563eb" strokeWidth={4} />
+            <Line
+              type="monotone"
+              dataKey="score"
+              stroke="#2563eb"
+              strokeWidth={4}
+            />
           </LineChart>
+        </div>
+
+        <div className="rounded-2xl bg-white p-6 shadow-lg border border-slate-100">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">
+            Overall Student Feedback
+          </h2>
+
+          <div className={`rounded-2xl border p-5 ${overallFeedback.color}`}>
+            <h3 className="text-xl font-bold mb-2">{overallFeedback.title}</h3>
+            <p className="leading-7">{overallFeedback.message}</p>
+          </div>
+
+          {student.feedbacks && student.feedbacks.length > 0 && (
+            <div className="mt-5 grid gap-4 lg:grid-cols-3">
+              {student.feedbacks.map((feedback) => (
+                <div
+                  key={feedback.id}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                >
+                  <h3 className="font-bold text-slate-900 mb-2">
+                    Detailed Feedback
+                  </h3>
+
+                  <p className="text-sm text-slate-600 mb-3">
+                    {feedback.summary}
+                  </p>
+
+                  <p className="text-sm">
+                    <span className="font-semibold text-emerald-700">
+                      Strengths:
+                    </span>{" "}
+                    {feedback.strengths}
+                  </p>
+
+                  <p className="text-sm mt-2">
+                    <span className="font-semibold text-red-700">
+                      Weaknesses:
+                    </span>{" "}
+                    {feedback.weaknesses}
+                  </p>
+
+                  <p className="text-sm mt-2">
+                    <span className="font-semibold text-blue-700">
+                      Next Steps:
+                    </span>{" "}
+                    {feedback.nextSteps}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="grid gap-6 xl:grid-cols-2">
@@ -299,6 +392,7 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold text-slate-900 mb-4">
               Weak Areas Summary
             </h2>
+
             <div className="space-y-3">
               {weakAssessments.length === 0 ? (
                 <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-700">
@@ -321,10 +415,12 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold text-slate-900 mb-4">
               Skill Gaps Identified
             </h2>
+
             <div className="space-y-3">
               {weakAssessments.length === 0 && weakQuizzes.length === 0 ? (
                 <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-700">
-                  No major skill gaps identified. Keep maintaining your performance.
+                  No major skill gaps identified. Keep maintaining your
+                  performance.
                 </div>
               ) : (
                 <>
@@ -355,6 +451,7 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-bold text-slate-900 mb-4">
             Enrolled Subjects
           </h2>
+
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {student.enrollments.map((e) => (
               <Link
@@ -365,12 +462,15 @@ export default function DashboardPage() {
                 <div className="mb-3 inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
                   {e.subject.code}
                 </div>
+
                 <h3 className="font-bold text-slate-900 text-lg">
                   {e.subject.name}
                 </h3>
+
                 <p className="text-sm text-slate-500 mt-2 line-clamp-3">
                   {e.subject.description}
                 </p>
+
                 <p className="text-sm text-blue-600 mt-4 font-semibold group-hover:translate-x-1 transition">
                   View subject details →
                 </p>
@@ -381,7 +481,10 @@ export default function DashboardPage() {
 
         <div className="grid gap-6 xl:grid-cols-2">
           <div className="rounded-2xl bg-white p-6 shadow-lg border border-slate-100">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Assessments</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
+              Assessments
+            </h2>
+
             <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2">
               {student.assessments.map((a) => (
                 <div
@@ -391,10 +494,13 @@ export default function DashboardPage() {
                   <h3 className="font-bold text-slate-900">
                     {a.title} ({a.subject.name})
                   </h3>
+
                   <p className="text-sm text-slate-500 mt-1">Type: {a.type}</p>
+
                   <p className="mt-2 font-medium text-slate-800">
                     Score: {a.score}/{a.maxScore}
                   </p>
+
                   <p className="mt-2 text-slate-600">{a.feedback}</p>
                 </div>
               ))}
@@ -403,6 +509,7 @@ export default function DashboardPage() {
 
           <div className="rounded-2xl bg-white p-6 shadow-lg border border-slate-100">
             <h2 className="text-2xl font-bold text-slate-900 mb-4">Quizzes</h2>
+
             <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2">
               {student.quizzes.map((q) => (
                 <div
@@ -412,7 +519,11 @@ export default function DashboardPage() {
                   <h3 className="font-bold text-slate-900">
                     {q.title} ({q.subject.name})
                   </h3>
-                  <p className="text-sm text-slate-500 mt-1">Topic: {q.topic}</p>
+
+                  <p className="text-sm text-slate-500 mt-1">
+                    Topic: {q.topic}
+                  </p>
+
                   <p className="mt-2 font-medium text-slate-800">
                     Score: {q.score}/{q.maxScore}
                   </p>
@@ -427,6 +538,7 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold text-slate-900 mb-4">
               Database Recommendations
             </h2>
+
             <div className="space-y-4">
               {student.recommendations.map((rec) => (
                 <div
@@ -444,6 +556,7 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold text-slate-900 mb-4">
               Smart Recommendations
             </h2>
+
             <div className="space-y-4">
               {smartSuggestions.map((s, i) => (
                 <div
@@ -457,6 +570,8 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      <Chatbot />
     </main>
   );
 }

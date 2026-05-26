@@ -4,12 +4,27 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { questionBank, MCQ } from "../../../lib/questionBank";
+import Chatbot from "../../../components/Chatbot";
+
+type SubjectModule = {
+  id: number;
+  title: string;
+  description: string;
+};
+
+type LearningOutcome = {
+  id: number;
+  code: string;
+  description: string;
+};
 
 type Subject = {
   id: number;
   code: string;
   name: string;
   description: string;
+  modules?: SubjectModule[];
+  learningOutcomes?: LearningOutcome[];
 };
 
 type Assessment = {
@@ -196,6 +211,60 @@ export default function SubjectDetailsPage() {
 
         <div className="grid gap-6 xl:grid-cols-2">
           <div className="rounded-2xl bg-white p-6 shadow-lg border border-slate-100">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
+              Subject Modules
+            </h2>
+
+            {subject.modules && subject.modules.length > 0 ? (
+              <div className="space-y-4">
+                {subject.modules.map((module) => (
+                  <div
+                    key={module.id}
+                    className="rounded-2xl border border-blue-100 bg-blue-50 p-4"
+                  >
+                    <h3 className="font-bold text-blue-800">{module.title}</h3>
+                    <p className="text-blue-700 mt-1">{module.description}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-slate-600">
+                No modules available for this subject.
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl bg-white p-6 shadow-lg border border-slate-100">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
+              SILOs / Learning Outcomes
+            </h2>
+
+            {subject.learningOutcomes && subject.learningOutcomes.length > 0 ? (
+              <div className="space-y-4">
+                {subject.learningOutcomes.map((outcome) => (
+                  <div
+                    key={outcome.id}
+                    className="rounded-2xl border border-indigo-100 bg-indigo-50 p-4"
+                  >
+                    <h3 className="font-bold text-indigo-800">
+                      {outcome.code}
+                    </h3>
+                    <p className="text-indigo-700 mt-1">
+                      {outcome.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-slate-600">
+                No learning outcomes available for this subject.
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="grid gap-6 xl:grid-cols-2">
+          <div className="rounded-2xl bg-white p-6 shadow-lg border border-slate-100">
             <h2 className="text-2xl font-bold text-slate-900 mb-4">Assessments</h2>
             <div className="space-y-4">
               {assessments.map((assessment) => {
@@ -368,7 +437,8 @@ export default function SubjectDetailsPage() {
 
                   {quizSubmitted && (
                     <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-emerald-700">
-                      Correct Answer: <span className="font-semibold">{q.answer}</span>
+                      Correct Answer:{" "}
+                      <span className="font-semibold">{q.answer}</span>
                     </div>
                   )}
                 </div>
@@ -414,6 +484,7 @@ export default function SubjectDetailsPage() {
           </div>
         </div>
       </div>
+      <Chatbot />
     </main>
   );
 }

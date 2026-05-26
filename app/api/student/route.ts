@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prism";
-
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -19,21 +18,31 @@ export async function GET(req: Request) {
       },
       include: {
         university: true,
+        feedbacks: true,
+
         enrollments: {
           include: {
-            subject: true,
+            subject: {
+              include: {
+                modules: true,
+                learningOutcomes: true,
+              },
+            },
           },
         },
+
         assessments: {
           include: {
             subject: true,
           },
         },
+
         quizzes: {
           include: {
             subject: true,
           },
         },
+
         recommendations: true,
       },
     });

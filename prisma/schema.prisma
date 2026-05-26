@@ -13,27 +13,30 @@ model University {
 }
 
 model Student {
-  id                 Int           @id @default(autoincrement())
+  id                 Int               @id @default(autoincrement())
   name               String
-  email              String        @unique
+  email              String            @unique
   password           String
   overallPerformance Float
   universityId       Int
-  university         University    @relation(fields: [universityId], references: [id])
+  university         University        @relation(fields: [universityId], references: [id])
   enrollments        Enrollment[]
   assessments        Assessment[]
   quizzes            Quiz[]
   recommendations    Recommendation[]
+  feedbacks          StudentFeedback[]
 }
 
 model Subject {
-  id          Int          @id @default(autoincrement())
-  code        String       @unique
-  name        String
-  description String
-  enrollments Enrollment[]
-  assessments Assessment[]
-  quizzes     Quiz[]
+  id               Int               @id @default(autoincrement())
+  code             String            @unique
+  name             String
+  description      String
+  enrollments      Enrollment[]
+  assessments      Assessment[]
+  quizzes          Quiz[]
+  modules          SubjectModule[]
+  learningOutcomes LearningOutcome[]
 }
 
 model Enrollment {
@@ -78,4 +81,30 @@ model Recommendation {
   content   String
   studentId Int
   student   Student @relation(fields: [studentId], references: [id])
+}
+
+model SubjectModule {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  subjectId   Int
+  subject     Subject @relation(fields: [subjectId], references: [id])
+}
+
+model LearningOutcome {
+  id          Int     @id @default(autoincrement())
+  code        String
+  description String
+  subjectId   Int
+  subject     Subject @relation(fields: [subjectId], references: [id])
+}
+
+model StudentFeedback {
+  id         Int     @id @default(autoincrement())
+  summary    String
+  strengths  String
+  weaknesses String
+  nextSteps  String
+  studentId  Int
+  student    Student @relation(fields: [studentId], references: [id])
 }
