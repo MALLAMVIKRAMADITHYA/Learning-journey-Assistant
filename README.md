@@ -83,6 +83,275 @@ git clone https://github.com/MALLAMVIKRAMADITHYA/Learning-journey-Assistant
 cd learning-journey-assistant
 2️⃣ Install Dependencies
 npm install
+# 🖥️ Important Commands Used in the Project
+
+## 📦 Install Project Dependencies
+
+```bash
+npm install
+```
+
+This command installs all required project dependencies listed in the `package.json` file, including React, Next.js, Prisma, Tailwind CSS, and other libraries used in the application.
+
+---
+
+# ▶️ Start Development Server
+
+```bash
+npm run dev
+```
+
+This command starts the Next.js development server and runs the application locally for development and testing.
+
+---
+
+# 🏗️ Build the Application
+
+```bash
+npm run build
+```
+
+This command creates an optimized production build of the application for deployment.
+
+---
+
+# 🚀 Start Production Server
+
+```bash
+npm start
+```
+
+This command runs the production version of the application after building the project.
+
+---
+
+# 🧠 Prisma Commands
+
+## Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+This command generates the Prisma Client used to interact with the SQLite database through Prisma ORM.
+
+---
+
+## Push Database Schema
+
+```bash
+npx prisma db push
+```
+
+This command synchronizes the Prisma schema with the SQLite database and creates database tables automatically.
+
+---
+
+## Run Database Migrations
+
+```bash
+npx prisma migrate dev
+```
+
+This command creates and applies database migrations during development.
+
+---
+
+## Open Prisma Studio
+
+```bash
+npx prisma studio
+```
+
+This command opens Prisma Studio, which provides a graphical interface for viewing and managing database records.
+
+---
+
+## Seed Database with Sample Data
+
+```bash
+npx prisma db seed
+```
+
+This command inserts sample student, subject, quiz, recommendation, and feedback data into the database.
+
+---
+
+# 🌐 Next.js Commands
+
+## Create Next.js Project
+
+```bash
+npx create-next-app@latest
+```
+
+This command creates a new Next.js application with the latest configuration and project setup.
+
+---
+
+# 🎨 Tailwind CSS Installation
+
+```bash
+npm install tailwindcss @tailwindcss/postcss postcss
+```
+
+This command installs Tailwind CSS and related PostCSS dependencies for frontend styling.
+
+---
+
+# 📊 Install Recharts
+
+```bash
+npm install recharts
+```
+
+This command installs the Recharts library used for dashboard analytics and performance visualization charts.
+
+---
+
+# 🗄️ Install Prisma Packages
+
+```bash
+npm install prisma @prisma/client
+```
+
+This command installs Prisma ORM and Prisma Client for database management and backend integration.
+
+---
+
+# ⚙️ Initialize Prisma
+
+```bash
+npx prisma init
+```
+
+This command initializes Prisma in the project and creates the `prisma` folder and configuration files.
+
+---
+
+# 🤖 Install Google Generative AI Package
+
+```bash
+npm install @google/generative-ai
+```
+
+This command installs the Google Generative AI package used for chatbot and AI integration features.
+
+---
+
+# 📂 Git Commands
+
+## Initialize Git Repository
+
+```bash
+git init
+```
+
+This command initializes a new Git repository for version control.
+
+---
+
+## Check Git Status
+
+```bash
+git status
+```
+
+This command displays modified, added, and untracked project files.
+
+---
+
+## Add Files to Git
+
+```bash
+git add .
+```
+
+This command adds all project files to the Git staging area before committing.
+
+---
+
+## Commit Changes
+
+```bash
+git commit -m "Project update"
+```
+
+This command creates a Git commit with a message describing the project changes.
+
+---
+
+## Push Project to GitHub
+
+```bash
+git push
+```
+
+This command uploads local project commits to the GitHub repository.
+
+---
+
+## Pull Latest Changes
+
+```bash
+git pull
+```
+
+This command downloads the latest changes from the GitHub repository.
+
+---
+
+# 🧪 Testing & Maintenance Commands
+
+## Run ESLint
+
+```bash
+npm run lint
+```
+
+This command checks the project for coding errors, formatting issues, and TypeScript or React warnings.
+
+---
+
+## Remove Node Modules (Windows PowerShell)
+
+```powershell
+Remove-Item -Recurse -Force node_modules
+```
+
+This command deletes the `node_modules` folder to fix dependency or package installation issues.
+
+---
+
+## Reinstall Project Packages
+
+```bash
+npm install
+```
+
+This command reinstalls all project dependencies after removing `node_modules`.
+
+---
+
+# 📁 Environment Variables
+
+## Example `.env`
+
+```env
+DATABASE_URL="file:./dev.db"
+```
+
+This environment variable defines the SQLite database location used by Prisma ORM.
+
+---
+
+## Example `.env.local`
+
+```env
+GOOGLE_API_KEY=your_api_key
+```
+
+This environment variable stores the API key used for AI chatbot integration.
 
 3️⃣ Configure Environment Variables
    DATABASE_URL="file:./dev.db"
